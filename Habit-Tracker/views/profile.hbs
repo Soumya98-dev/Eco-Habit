@@ -1,0 +1,165 @@
+
+<div class="profile">
+    <div class="imgProfile">
+    <img src="{{profilePic}}" class="img-thumbnail" alt="profile photo">
+     <figcaption class="figure-caption">
+        <a href="/profile/edit">Edit profile</a></figcaption>
+    </div>
+    <div class="descProfile">
+    <h1>Welcome, {{username}}!</h1>
+    <section class="section">
+     <p>{{bio}}</p>
+    </section>
+    </div>
+</div>
+<section id="overview">
+    <h2>Overview</h2>
+<div>   
+  <canvas id="myChart"></canvas>
+</div>
+
+</section>
+<section id="habits" >
+    <h2 class="habits">Habits</h2>
+{{#each habits}}
+{{#unless this.groupOfUsers.[0]}}
+<div class="habit-section">
+<form action="/habits/{{_id}}" method="POST">
+  <div class="mb-3 habit-title">
+   <a href="/showhabit/{{id}}">
+    <h5>{{this.title}}</h5>
+   </a>
+  </div>
+{{#if checked}}
+<button type="submit" disabled="true" class="btn btn-disabled" onclick="style.display = 'none'">Done!</button>
+{{else}}
+  <button type="submit" class="btn btn-primary" onclick="style.display = 'none'">Done!</button>
+  {{/if}}
+</form>
+<table class="table caption-top w-50 weekly-progress" >
+  <thead>
+    <tr>
+      <th scope="col-1">M</th>
+      <th scope="col-1">T</th>
+      <th scope="col-1">W</th>
+      <th scope="col-1">T</th>
+      <th scope="col-1">F</th>
+      <th scope="col-1">S</th>
+      <th scope="col-1">S</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      {{#each this.tableArray}}
+      {{#if this}}
+      <td><div class="circle fill-circle"></div></td>
+      {{else}}
+      <td><div class="circle"></div></td>
+      {{/if}}
+      {{/each}}
+    </tr>
+  </tbody>
+</table>
+
+</div>
+</section>
+{{/unless}}
+{{/each}}
+
+<section id="groups" >
+    <h2 class="groups">Groups</h2>
+
+{{#each habits}}
+{{#if this.groupOfUsers.[0]}}
+<div class="habit-section">
+<form action="/habits/{{_id}}" method="POST">
+  <div class="mb-3 habit-title">
+   <a href="/grouphabit/{{id}}">
+    <h3>{{this.title}}</h3>
+   </a>
+  </div>
+{{#if checked}}
+<button type="submit" disabled="true" class="btn btn-disabled" onclick="style.display = 'none'">Done!</button>
+{{else}}
+  <button type="submit" class="btn btn-primary" onclick="style.display = 'none'">Done!</button>
+  {{/if}}
+</form>
+
+{{!-- Table to display current week progress (bootstrap) --}}
+
+<table class="table caption-top w-50 weekly-progress">
+  {{!-- <caption>Current week progress</caption> --}}
+  <thead>
+    <tr>
+      <th scope="col-.5">M</th>
+      <th scope="col-.5">T</th>
+      <th scope="col-1">W</th>
+      <th scope="col-1">T</th>
+      <th scope="col-1">F</th>
+      <th scope="col-1">S</th>
+      <th scope="col-1">S</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      {{#each this.tableArray}}
+      {{#if this}}
+      <td><div class="circle fill-circle"></div></td>
+      {{else}}
+      <td><div class="circle"></div></td>
+      {{/if}}
+      {{/each}}
+    </tr>
+  </tbody>
+</table>
+
+</div>
+</section>
+{{/if}}
+{{/each}}
+
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('myChart');
+
+
+ // const user = require("../routes/user.routes")
+  //console.log(user.arrayTest)
+
+  axios.get("https://cheqq-habit.fly.dev/getChartData")
+  .then(({data}) => {
+    new Chart(ctx, {
+    type: 'polarArea',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        label: '# of Votes',
+        data: data.dates,
+        borderWidth: 1,
+        backgroundColor: [
+      'rgba(255, 99, 122, 0.5)',
+      'rgb(255, 160, 30, 0.5)',
+      'rgb(255, 235, 106, 0.7)',
+      'rgb(74, 207, 145, 0.5)',
+      'rgb(54, 162, 235, 0.5)',
+      'rgb(22, 32, 168, 0.5)',
+      'rgb(104, 48, 156, 0.5)'
+      ]
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  })
+
+  
+</script>
