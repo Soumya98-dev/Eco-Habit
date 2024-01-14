@@ -1,12 +1,8 @@
-# Cheqq - Habit Tracker
+# Eco-Habit - Habit Tracker
 
 The project is a habit tracker app that also has functions of a social network. Users can create an account, create/choose a selection of habits that they want to participate in and check off completed habits each day. The app is called Eco-Habiy.
 
 There are graphs showing your progress, both in the current week and across the last seven natural days.
-
-## About us
-
-We are a team of three students fully invested in a Web Development bootcamp in Barcelona. Our names are Camila Buldin, Lisa Schwetlick and Raquel Barrio.
 
 ## Installation guide
 
